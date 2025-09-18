@@ -14,6 +14,7 @@ export default function App() {
 
   const handleSubmit = async () => {
     if (!file) return alert("Por favor, selecciona un archivo .py o .java");
+
     const formData = new FormData();
     formData.append("file", file);
 
@@ -45,23 +46,39 @@ export default function App() {
           <input type="file" accept=".py,.java" onChange={handleFileChange} />
         </label>
 
-        <button className="execute-button" onClick={handleSubmit} disabled={loading}>
-          {loading ? "⏳ Ejecutando..." : <>
-            <FaPlayCircle /> Ejecutar Tests
-          </>}
+        <button
+          className="execute-button"
+          onClick={handleSubmit}
+          disabled={loading}
+        >
+          {loading ? "⏳ Ejecutando..." : (
+            <>
+              <FaPlayCircle /> Ejecutar Tests
+            </>
+          )}
         </button>
 
         {result && (
           <div className="result-box">
-            {result.error && <p className="error-text">❌ Error: {result.error}</p>}
+            {result.error && (
+              <p className="error-text">❌ Error: {result.error}</p>
+            )}
+
             {result.success && result.results && result.results.map((r, idx) => (
               <div key={idx} className="test-result">
-                <p><strong>Entrada:</strong> {r.input}</p>
-                <p><strong>Esperado:</strong> {r.expected}</p>
-                <p><strong>Obtenido:</strong> {r.output}</p>
-                <p className={r.passed ? "success-text" : "error-text"}>
-                  {r.passed ? "✅ Correcto" : "❌ Incorrecto"}
-                </p>
+		<p className="case-number"><strong>{r.caseName}</strong></p>
+                {r.error ? (
+                  <p className="error-text">❌ Error: {r.error}</p>
+                ) : (
+                  <>
+                    <p><strong>Entrada:</strong> {r.input}</p>
+                    <p><strong>Esperado:</strong> {r.expected}</p>
+                    <p><strong>Obtenido:</strong> {r.output}</p>
+                    <p className={r.passed ? "success-text" : "error-text"}>
+                      {r.passed ? "✅ Correcto" : "❌ Incorrecto"}
+                    </p>
+                  </>
+                )}
                 <hr />
               </div>
             ))}

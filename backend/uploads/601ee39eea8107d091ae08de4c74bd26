@@ -1,0 +1,22 @@
+# E.py
+from collections import defaultdict
+
+# Leer entrada
+N, K = map(int, input().split())
+arr = list(map(int, input().split()))
+
+freq = defaultdict(int)
+start = 0
+max_len = 0
+
+for end in range(N):
+    freq[arr[end]] += 1
+    while len(freq) > K:
+        freq[arr[start]] -= 1
+        if freq[arr[start]] == 0:
+            del freq[arr[start]]
+        start += 1
+    if len(freq) == K:
+        max_len = max(max_len, end - start + 1)
+
+print(max_len)

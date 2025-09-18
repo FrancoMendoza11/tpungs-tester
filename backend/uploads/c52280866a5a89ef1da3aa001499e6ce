@@ -1,0 +1,23 @@
+# E1.py
+# Encuentra la longitud máxima de un subarray con exactamente K elementos distintos
+from collections import defaultdict
+
+def main():
+    n, k = map(int, input().split())
+    arr = list(map(int, input().split()))
+    freq = defaultdict(int)
+    start = 0
+    max_len = 0
+    for end in range(n):
+        freq[arr[end]] += 1
+        while len(freq) > k:
+            freq[arr[start]] -= 1
+            if freq[arr[start]] == 0:
+                del freq[arr[start]]
+            start += 1
+        if len(freq) == k:
+            max_len = max(max_len, end - start + 1)
+    print(max_len)
+
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,33 @@
+import java.util.Scanner;
+
+public class a {
+    public static long sumaDePares(int[] arr, int K) {
+        int[] modCount = new int[K];
+        for (int num : arr) {
+            modCount[num % K]++;
+        }
+
+        long count = (long) modCount[0] * (modCount[0] - 1) / 2;
+
+        for (int i = 1; i <= K / 2; i++) {
+            if (i != K - i) {
+                count += modCount[i] * modCount[K - i];
+            }
+        }
+
+        if (K % 2 == 0) {
+            count += (long) modCount[K / 2] * (modCount[K / 2] - 1) / 2;
+        }
+
+        return count;
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int N = sc.nextInt();
+        int K = sc.nextInt();
+        int[] arr = new int[N];
+        for (int i = 0; i < N; i++) arr[i] = sc.nextInt();
+        System.out.println(sumaDePares(arr, K));
+    }
+}

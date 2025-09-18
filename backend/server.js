@@ -2,8 +2,12 @@ import express from "express";
 import multer from "multer";
 import path from "path";
 import { fileURLToPath } from "url";
-import { exec } from "child_process";
+import fs from "fs";
 import { testCases } from "./testCases.js";
+
+// Importar runners
+import { runPython } from "./runners/pythonRunner.js";
+import { runJava } from "./runners/javaRunner.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -11,10 +15,8 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const port = 3000;
 
-// Carpeta para subir archivos temporalmente
 const upload = multer({ dest: path.join(__dirname, "uploads/") });
 
-// Middleware CORS
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
@@ -24,14 +26,22 @@ app.use((req, res, next) => {
   next();
 });
 
-// Ruta para subir archivo
 app.post("/upload", upload.single("file"), async (req, res) => {
   try {
     const file = req.file;
     if (!file) return res.json({ error: "No se recibió archivo" });
 
-    const ext = path.extname(file.originalname).toLowerCase(); // .py o .java
+    const ext = path.extname(file.originalname).toLowerCase();
     const baseName = path.basename(file.originalname, ext);
+
+    // Asegurar extensión correcta para Java y Python
+    let filePath = file.path;
+    if (ext === ".java" || ext === ".py") {
+      const newPath = path.join(path.dirname(file.path), baseName + ext);
+      fs.renameSync(file.path, newPath);
+      filePath = newPath;
+    }
+
     const problemLetter = baseName[0].toUpperCase();
 
     if (!["A", "B", "C", "D", "E"].includes(problemLetter)) {
@@ -43,30 +53,37 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 
     const results = [];
 
-    for (const testCase of cases) {
+    for (let i = 0; i < cases.length; i++) {
+      const testCase = cases[i];
       const input = testCase.input;
       let output;
 
       try {
         if (ext === ".py") {
-          output = await runPython(file.path, input);
+          output = await runPython(filePath, input);
         } else if (ext === ".java") {
-          output = await runJava(file.path, input);
+          output = await runJava(filePath, input);
         } else {
           results.push({ error: "Extensión de archivo no soportada" });
           continue;
         }
 
         results.push({
+          caseNumber: i + 1,
+          caseName: testCase.name, // <--- agregado
           input,
           expected: testCase.output.trim(),
           output: output.trim(),
-          passed: output.trim() === testCase.output.trim(),
+          passed:
+            output.replace(/\s+$/, "") === testCase.output.replace(/\s+$/, ""),
         });
       } catch (err) {
-        results.push({ input, error: err.message });
+        results.push({ caseNumber: i + 1, input, error: err.message });
       }
     }
+
+    // Limpiar archivo subido
+    fs.unlinkSync(filePath);
 
     res.json({ success: true, results });
   } catch (err) {
@@ -74,43 +91,6 @@ app.post("/upload", upload.single("file"), async (req, res) => {
     res.json({ error: "Ocurrió un error al ejecutar los tests" });
   }
 });
-
-// Runners
-function runPython(filePath, input) {
-  return new Promise((resolve) => {
-    const process = exec(`python3 "${filePath}"`, (err, stdout, stderr) => {
-      if (err) return resolve(stderr || err.message);
-      resolve(stdout);
-    });
-    if (input) {
-      process.stdin.write(input);
-      process.stdin.end();
-    }
-  });
-}
-
-function runJava(filePath, input) {
-  return new Promise((resolve) => {
-    const dir = path.dirname(filePath);
-    const className = path.basename(filePath, ".java");
-
-    // Compilar
-    exec(`javac "${filePath}"`, { cwd: dir }, (err, stdout, stderr) => {
-      if (err) return resolve(stderr || err.message);
-
-      // Ejecutar clase
-      const run = exec(`java -cp "${dir}" ${className}`, { cwd: dir }, (err2, stdout2, stderr2) => {
-        if (err2) return resolve(stderr2 || err2.message);
-        resolve(stdout2);
-      });
-
-      if (input) {
-        run.stdin.write(input);
-        run.stdin.end();
-      }
-    });
-  });
-}
 
 app.listen(port, () => {
   console.log(`Servidor corriendo en http://localhost:${port}`);
