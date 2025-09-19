@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { FaCode, FaUpload, FaPlayCircle, FaCheck, FaTimes } from "react-icons/fa";
 import "./index.css";
 
@@ -6,10 +6,27 @@ export default function App() {
   const [file, setFile] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [progress, setProgress] = useState(0);
+
+  // Incremento de barra mientras loading está activo
+  useEffect(() => {
+    let interval;
+    if (loading) {
+      setProgress(0);
+      interval = setInterval(() => {
+        setProgress(prev => (prev < 95 ? prev + 1 : prev)); // nunca llega al 100% hasta finalizar
+      }, 170); // cada 100ms avanza 1%
+    } else {
+      setProgress(100); // cuando termina, va al 100%
+      setTimeout(() => setProgress(0), 500); // reset para la próxima ejecución
+    }
+    return () => clearInterval(interval);
+  }, [loading]);
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
     setResult(null);
+    setProgress(0);
   };
 
   const handleSubmit = async () => {
@@ -19,6 +36,7 @@ export default function App() {
     formData.append("file", file);
 
     setLoading(true);
+
     try {
       const res = await fetch("http://localhost:3000/upload", {
         method: "POST",
@@ -58,6 +76,17 @@ export default function App() {
           )}
         </button>
 
+        {/* Barra de progreso */}
+        {loading && (
+          <div className="progress-bar-container">
+            <div
+              className="progress-bar"
+              style={{ width: `${progress}%` }}
+            ></div>
+            <p>{progress}%</p>
+          </div>
+        )}
+
         {result && (
           <div className="result-box">
             {result.error && (
@@ -66,7 +95,6 @@ export default function App() {
 
             {result.success && (
               <>
-                {/* Resumen arriba */}
                 <div className="summary">
                   <p>
                     ✅ {result.results.filter(r => r.passed).length} correctos
@@ -74,7 +102,6 @@ export default function App() {
                   </p>
                 </div>
 
-                {/* Resultados individuales */}
                 {result.results.map((r, idx) => (
                   <div key={idx} className={`test-result ${r.passed ? "passed" : "failed"}`}>
                     <p className="case-number"><strong>{r.caseName}</strong></p>
@@ -88,7 +115,7 @@ export default function App() {
                             {r.input
                               .split("\n")
                               .map(line => line.trim())
-                              .filter(line => line !== "") // elimina líneas vacías
+                              .filter(line => line !== "")
                               .map((line, i) => (
                                 <span key={i} className="param-pill">{line}</span>
                               ))}
