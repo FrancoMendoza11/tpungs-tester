@@ -10,14 +10,39 @@ export const testCases = {
       output: "3"
     },
     {
-      name: "Caso 2: Ningún par divisible por K",
+      name: "Caso 2: 2 pares divisibles por K",
       input: "4 5\n1 2 3 4\n",
-      output: "0"
+      output: "2"
     },
     {
       name: "Caso 3: Todos los pares son válidos",
       input: "3 1\n1 2 3\n",
       output: "3"
+    },
+    {
+      name: "Caso 4: Ningún par divisible por K",
+      input: "3 4\n1 1 1\n",
+      output: "0"
+    },
+    {
+      name: "Caso 5: K grande con números grandes",
+      input: "5 1000\n1000000000 999999999 500000000 500000000 1000000000\n",
+      output: "4"
+    },
+    {
+      name: "Caso 6: Múltiples residuos cero",
+      input: "6 5\n5 10 15 20 25 30\n",
+      output: "15"
+    },
+    {
+      name: "Caso 7: K par con muchos elementos en K/2",
+      input: "5 6\n3 3 3 9 9\n",
+      output: "6"
+    },
+    {
+      name: "Caso 8: Arreglo vacío",
+      input: "0 5\n\n",
+      output: "0"
     }
   ],
 
@@ -37,6 +62,26 @@ export const testCases = {
       name: "Caso 3: Todos los números iguales",
       input: "4\n7 7 7 7\n",
       output: "1"
+    },
+    {
+      name: "Caso 4: Múltiples números repetidos",
+      input: "10\n1 2 3 1 2 3 4 4 5 5\n",
+      output: "5"
+    },
+    {
+      name: "Caso 5: Un solo elemento",
+      input: "1\n5\n",
+      output: "0"
+    },
+    {
+      name: "Caso 6: Números grandes",
+      input: "6\n1000000000 1000000000 999999999 999999999 888888888 777777777\n",
+      output: "2"
+    },
+    {
+      name: "Caso 7: Arreglo vacío",
+      input: "0\n\n",
+      output: "0"
     }
   ],
 
@@ -56,6 +101,31 @@ export const testCases = {
       name: "Caso 3: Ningún subarray alcanza S",
       input: "3 10\n1 2 3\n",
       output: "0"
+    },
+    {
+      name: "Caso 4: Primer elemento cumple solo",
+      input: "5 10\n10 1 1 1 1\n",
+      output: "1"
+    },
+    {
+      name: "Caso 5: Último elemento cumple solo",
+      input: "5 10\n1 1 1 1 10\n",
+      output: "1"
+    },
+    {
+      name: "Caso 6: S muy grande",
+      input: "4 100\n1 2 3 4\n",
+      output: "0"
+    },
+    {
+      name: "Caso 7: S igual a la suma total",
+      input: "4 10\n1 2 3 4\n",
+      output: "4"
+    },
+    {
+      name: "Caso 8: Elementos grandes",
+      input: "5 500000000\n100000000 200000000 300000000 400000000 500000000\n",
+      output: "2"
     }
   ],
 
@@ -75,6 +145,26 @@ export const testCases = {
       name: "Caso 3: K = 1, máxima suma es el mayor número",
       input: "4 1\n1 5 3 2\n",
       output: "5"
+    },
+    {
+      name: "Caso 4: Todos elementos negativos",
+      input: "5 3\n-1 -2 -3 -4 -5\n",
+      output: "-6"
+    },
+    {
+      name: "Caso 5: K igual al tamaño del arreglo",
+      input: "4 4\n1 2 3 4\n",
+      output: "10"
+    },
+    {
+      name: "Caso 6: Números grandes",
+      input: "5 2\n1000000000 2000000000 3000000000 4000000000 5000000000\n",
+      output: "9000000000"
+    },
+    {
+      name: "Caso 7: K = 0 (caso límite)",
+      input: "5 0\n1 2 3 4 5\n",
+      output: "0"
     }
   ],
 
@@ -93,6 +183,26 @@ export const testCases = {
     {
       name: "Caso 3: No hay subarray con exactamente K elementos únicos",
       input: "5 3\n1 1 2 2 1\n",
+      output: "0"
+    },
+    {
+      name: "Caso 4: K = 1, encontrar el elemento más frecuente consecutivo",
+      input: "7 1\n1 2 1 1 1 3 4\n",
+      output: "4"
+    },
+    {
+      name: "Caso 5: Elementos grandes",
+      input: "6 2\n1000000000 1000000000 2000000000 2000000000 3000000000 4000000000\n",
+      output: "4"
+    },
+    {
+      name: "Caso 6: K mayor que elementos únicos totales",
+      input: "5 6\n1 2 3 4 5\n",
+      output: "0"
+    },
+    {
+      name: "Caso 7: K = 0 (caso límite)",
+      input: "5 0\n1 2 3 4 5\n",
       output: "0"
     }
   ],

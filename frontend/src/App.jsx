@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { FaCode, FaUpload, FaPlayCircle } from "react-icons/fa";
-import "./index.css"; // tu CSS normal
+import { FaCode, FaUpload, FaPlayCircle, FaCheck, FaTimes } from "react-icons/fa";
+import "./index.css";
 
 export default function App() {
   const [file, setFile] = useState(null);
@@ -64,24 +64,47 @@ export default function App() {
               <p className="error-text">❌ Error: {result.error}</p>
             )}
 
-            {result.success && result.results && result.results.map((r, idx) => (
-              <div key={idx} className="test-result">
-		<p className="case-number"><strong>{r.caseName}</strong></p>
-                {r.error ? (
-                  <p className="error-text">❌ Error: {r.error}</p>
-                ) : (
-                  <>
-                    <p><strong>Entrada:</strong> {r.input}</p>
-                    <p><strong>Esperado:</strong> {r.expected}</p>
-                    <p><strong>Obtenido:</strong> {r.output}</p>
-                    <p className={r.passed ? "success-text" : "error-text"}>
-                      {r.passed ? "✅ Correcto" : "❌ Incorrecto"}
-                    </p>
-                  </>
-                )}
-                <hr />
-              </div>
-            ))}
+            {result.success && (
+              <>
+                {/* Resumen arriba */}
+                <div className="summary">
+                  <p>
+                    ✅ {result.results.filter(r => r.passed).length} correctos
+                    &nbsp; | ❌ {result.results.filter(r => !r.passed).length} incorrectos
+                  </p>
+                </div>
+
+                {/* Resultados individuales */}
+                {result.results.map((r, idx) => (
+                  <div key={idx} className={`test-result ${r.passed ? "passed" : "failed"}`}>
+                    <p className="case-number"><strong>{r.caseName}</strong></p>
+                    {r.error ? (
+                      <p className="error-text">❌ Error: {r.error}</p>
+                    ) : (
+                      <>
+                        <div className="input-box">
+                          <strong>Entrada:</strong>
+                          <div className="input-params">
+                            {r.input
+                              .split("\n")
+                              .map(line => line.trim())
+                              .filter(line => line !== "") // elimina líneas vacías
+                              .map((line, i) => (
+                                <span key={i} className="param-pill">{line}</span>
+                              ))}
+                          </div>
+                        </div>
+                        <p><strong>Esperado:</strong> {r.expected}</p>
+                        <p><strong>Obtenido:</strong> {r.output}</p>
+                        <p className={r.passed ? "success-text" : "error-text"}>
+                          {r.passed ? <><FaCheck /> Correcto</> : <><FaTimes /> Incorrecto</>}
+                        </p>
+                      </>
+                    )}
+                  </div>
+                ))}
+              </>
+            )}
           </div>
         )}
       </div>
