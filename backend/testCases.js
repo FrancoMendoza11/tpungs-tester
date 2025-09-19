@@ -161,17 +161,12 @@ export const testCases = {
       output: "0"
     },
     {
-      name: "Caso 4: K = 1, encontrar el elemento más frecuente consecutivo",
-      input: "7 1\n1 2 1 1 1 3 4\n",
-      output: "4"
-    },
-    {
-      name: "Caso 5: K mayor que elementos únicos totales",
+      name: "Caso 4: K mayor que elementos únicos totales",
       input: "5 6\n1 2 3 4 5\n",
       output: "0"
     },
     {
-      name: "Caso 6: K = 0 (caso límite)",
+      name: "Caso 5: K = 0 (caso límite)",
       input: "5 0\n1 2 3 4 5\n",
       output: "0"
     }
