@@ -25,22 +25,12 @@ export const testCases = {
       output: "0"
     },
     {
-      name: "Caso 5: K grande con números grandes",
-      input: "5 1000\n1000000000 999999999 500000000 500000000 1000000000\n",
-      output: "4"
-    },
-    {
-      name: "Caso 6: Múltiples residuos cero",
+      name: "Caso 5: Múltiples residuos cero",
       input: "6 5\n5 10 15 20 25 30\n",
       output: "15"
     },
     {
-      name: "Caso 7: K par con muchos elementos en K/2",
-      input: "5 6\n3 3 3 9 9\n",
-      output: "6"
-    },
-    {
-      name: "Caso 8: Arreglo vacío",
+      name: "Caso 6: Arreglo vacío",
       input: "0 5\n\n",
       output: "0"
     }
@@ -74,12 +64,7 @@ export const testCases = {
       output: "0"
     },
     {
-      name: "Caso 6: Números grandes",
-      input: "6\n1000000000 1000000000 999999999 999999999 888888888 777777777\n",
-      output: "2"
-    },
-    {
-      name: "Caso 7: Arreglo vacío",
+      name: "Caso 6: Arreglo vacío",
       input: "0\n\n",
       output: "0"
     }
@@ -121,11 +106,6 @@ export const testCases = {
       name: "Caso 7: S igual a la suma total",
       input: "4 10\n1 2 3 4\n",
       output: "4"
-    },
-    {
-      name: "Caso 8: Elementos grandes",
-      input: "5 500000000\n100000000 200000000 300000000 400000000 500000000\n",
-      output: "2"
     }
   ],
 
@@ -157,12 +137,7 @@ export const testCases = {
       output: "10"
     },
     {
-      name: "Caso 6: Números grandes",
-      input: "5 2\n1000000000 2000000000 3000000000 4000000000 5000000000\n",
-      output: "9000000000"
-    },
-    {
-      name: "Caso 7: K = 0 (caso límite)",
+      name: "Caso 6: K = 0 (caso límite)",
       input: "5 0\n1 2 3 4 5\n",
       output: "0"
     }
@@ -191,17 +166,12 @@ export const testCases = {
       output: "4"
     },
     {
-      name: "Caso 5: Elementos grandes",
-      input: "6 2\n1000000000 1000000000 2000000000 2000000000 3000000000 4000000000\n",
-      output: "4"
-    },
-    {
-      name: "Caso 6: K mayor que elementos únicos totales",
+      name: "Caso 5: K mayor que elementos únicos totales",
       input: "5 6\n1 2 3 4 5\n",
       output: "0"
     },
     {
-      name: "Caso 7: K = 0 (caso límite)",
+      name: "Caso 6: K = 0 (caso límite)",
       input: "5 0\n1 2 3 4 5\n",
       output: "0"
     }

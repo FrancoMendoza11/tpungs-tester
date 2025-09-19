@@ -14,8 +14,8 @@ export default function App() {
     if (loading) {
       setProgress(0);
       interval = setInterval(() => {
-        setProgress(prev => (prev < 95 ? prev + 1 : prev)); // nunca llega al 100% hasta finalizar
-      }, 170); // cada 100ms avanza 1%
+        setProgress(prev => (prev < 99 ? prev + 1 : prev)); // nunca llega al 100% hasta finalizar
+      }, 130); // cada 100ms avanza 1%
     } else {
       setProgress(100); // cuando termina, va al 100%
       setTimeout(() => setProgress(0), 500); // reset para la próxima ejecución
